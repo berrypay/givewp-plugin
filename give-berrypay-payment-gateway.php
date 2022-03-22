@@ -1,14 +1,14 @@
 <?php
 /*
 Plugin Name:  BerryPay GiveWP Payment Gateway
-// Plugin URI:   https://github.com/feedsbrain/give-berrypay-payment-gateway
+Plugin URI:   https://github.com/technicalbpm/givewp-berrypay
 Description:  BerryPay Payment Gateway Support for Give Donation Platform
 Version:      1.0
 Author:       BerryPay
 Author URI:   https://berrypay.com/
 License:      GPL3
-// License URI:  https://github.com/feedsbrain/give-berrypay-payment-gateway/blob/master/LICENSE
 */
+
 if (! defined( 'ABSPATH' )) {
     exit;
 }
