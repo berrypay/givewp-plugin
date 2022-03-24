@@ -244,7 +244,7 @@ function construct_form_and_post($payment_id, $payment_data) {
     $args = array(
         'ref_no'        => $payment_id,
         'amount'        => $payment_data['price'],
-        'currency'      => give_get_currency(),
+        'currency'      => give_get_currency($form_id, $payment_data),
         'prod_desc'     => stripslashes( $item_name ),
         'user_name'     => $payment_data['user_info']['first_name'] . ' ' . $payment_data['user_info']['last_name'],
         'user_email'    => $payment_data['user_email'],
