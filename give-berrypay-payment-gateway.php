@@ -135,17 +135,6 @@ function add_berrypay_gateway_settings($settings)
                     'id'   => 'berrypay_secret_key',
                     'type' => 'text',
                     ),
-//                 array(
-//                     'name'    => __( 'Billing Details', 'give' ),
-//                     'desc'    => __( 'Requires the donor\'s address to complete the donation?', 'give' ),
-//                     'id'      => 'berrypay_billing_details',
-//                     'type'    => 'radio_inline',
-//                     'default' => 'disabled',
-//                     'options' => array(
-//                         'enabled'  => __( 'Enabled', 'give' ),
-//                         'disabled' => __( 'Disabled', 'give' ),
-//                     )
-//                 ),
                 array(
                     'type' => 'sectionend',
                     'id'   => 'give_title_gateway_settings_berrypay',
