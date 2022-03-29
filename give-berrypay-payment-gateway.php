@@ -8,7 +8,6 @@ Author:       BerryPay
 Author URI:   https://berrypay.com/
 License:      GPL3
 */
-
 if (! defined( 'ABSPATH' )) {
     exit;
 }
@@ -136,17 +135,17 @@ function add_berrypay_gateway_settings($settings)
                     'id'   => 'berrypay_secret_key',
                     'type' => 'text',
                     ),
-                array(
-                    'name'    => __( 'Billing Details', 'give' ),
-                    'desc'    => __( 'Requires the donor\'s address to complete the donation?', 'give' ),
-                    'id'      => 'berrypay_billing_details',
-                    'type'    => 'radio_inline',
-                    'default' => 'disabled',
-                    'options' => array(
-                        'enabled'  => __( 'Enabled', 'give' ),
-                        'disabled' => __( 'Disabled', 'give' ),
-                    )
-                ),
+//                 array(
+//                     'name'    => __( 'Billing Details', 'give' ),
+//                     'desc'    => __( 'Requires the donor\'s address to complete the donation?', 'give' ),
+//                     'id'      => 'berrypay_billing_details',
+//                     'type'    => 'radio_inline',
+//                     'default' => 'disabled',
+//                     'options' => array(
+//                         'enabled'  => __( 'Enabled', 'give' ),
+//                         'disabled' => __( 'Disabled', 'give' ),
+//                     )
+//                 ),
                 array(
                     'type' => 'sectionend',
                     'id'   => 'give_title_gateway_settings_berrypay',
@@ -244,7 +243,7 @@ function construct_form_and_post($payment_id, $payment_data) {
     $args = array(
         'ref_no'        => $payment_id,
         'amount'        => $payment_data['price'],
-        'currency'      => give_get_currency($form_id, $payment_data),
+        'currency'      => give_get_currency(),
         'prod_desc'     => stripslashes( $item_name ),
         'user_name'     => $payment_data['user_info']['first_name'] . ' ' . $payment_data['user_info']['last_name'],
         'user_email'    => $payment_data['user_email'],
@@ -261,14 +260,14 @@ function construct_form_and_post($payment_id, $payment_data) {
     write_log('');
     write_log('Payment Args:');
     write_log($args);
-
+    $txn_prod_desc = "Payment Order ID: " . $args['ref_no'];
    
     ?>
     <form id="form" action="<?php echo $post_url; ?>" method="POST">
         <input type="hidden" name="txn_order_id" value="<?php echo $args['ref_no']; ?>">
         <input type="hidden" name="txn_amount" value="<?php echo $args['amount']; ?>">
         <input type="hidden" name="txn_product_name" value="<?php echo give_get_option('berrypay_merchant_name'); ?>">
-        <input type="hidden" name="txn_product_desc" value="<?php echo $args['prod_desc']; ?>">
+        <input type="hidden" name="txn_product_desc" value="<?php echo $txn_prod_desc; ?>">
         <input type="hidden" name="txn_buyer_name" value="<?php echo $args['user_name']; ?>">
         <input type="hidden" name="txn_buyer_email" value="<?php echo $args['user_email']; ?>">
         <input type="hidden" name="txn_buyer_phone" value="<?php echo $args['user_contact']; ?>">
@@ -281,14 +280,14 @@ function construct_form_and_post($payment_id, $payment_data) {
 
                 $prod_name = give_get_option('berrypay_merchant_name');
 
-                $string = $api_key . "|" . $args['amount'] . "|" . $args['user_email'] . "|" . $args['user_name'] . "|" . $args['user_contact'] . "|" . $args['ref_no'] . "|" . $args['prod_desc'] . "|" . $prod_name;
+                $string = $api_key . "|" . $args['amount'] . "|" . $args['user_email'] . "|" . $args['user_name'] . "|" . $args['user_contact'] . "|" . $args['ref_no'] . "|" . $txn_prod_desc . "|" . $prod_name;
 
                 $signature = hash_hmac('sha256', $string, $secret_key);
         ?>
         <input type="hidden" name="signature" value="<?php echo $signature ?>">
     </form>
 
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
     <script>
         jQuery(document).ready(function(){
             jQuery('#form').submit();
