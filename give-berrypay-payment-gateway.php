@@ -7,6 +7,7 @@ Version:      1.0
 Author:       BerryPay
 Author URI:   https://berrypay.com/
 License:      GPL3
+License URI:  https://github.com/feedsbrain/give-berrypay-payment-gateway/blob/master/LICENSE
 */
 if (! defined( 'ABSPATH' )) {
     exit;
@@ -211,6 +212,8 @@ add_action( 'give_gateway_berrypay', 'give_process_berrypay_payment' );
 function construct_form_and_post($payment_id, $payment_data) {
     
     $post_url = give_is_test_mode() ?  'https://secure.berrpaystaging.com/api/v2/app/payment/' . give_get_option('berrypay_pub_key') : 'https://securepay.berrypay.com/api/v2/app/payment/' . give_get_option('berrypay_pub_key') ;
+    $phone = '-';
+    $remark = '';
 
     // Get the success url.
     $return_url = add_query_arg( array(
@@ -236,8 +239,8 @@ function construct_form_and_post($payment_id, $payment_data) {
         'prod_desc'     => stripslashes( $item_name ),
         'user_name'     => $payment_data['user_info']['first_name'] . ' ' . $payment_data['user_info']['last_name'],
         'user_email'    => $payment_data['user_email'],
-        'user_contact'  => $payment_data['post_data']['give_phone'],
-        'remark'        => $payment_data['post_data']['give_remark'],
+        'user_contact'  => $phone,
+        'remark'        => $remark,
         'lang'          => get_bloginfo( 'charset' ),
         'return'        => $return_url,
         'cbt'           => get_bloginfo( 'name' ),
@@ -385,57 +388,22 @@ function give_build_berrypay_item_title($payment_data)
 /* Add Phone Number Field */
 function give_phone_number_form_fields( $form_id ) {
 	?>
-    <p id="give-phone-wrap" class="form-row form-row-wide">
-        <label class="give-label" for="give-phone">
-            <?php esc_html_e( 'Phone Number', 'give' ); ?>
-            <?php if ( give_field_is_required( 'give_phone', $form_id ) ) { ?>
-                <span class="give-required-indicator">*</span>
-            <?php } ?>
-            <span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'Phone number information is required for berrypay.', 'give' ); ?>"></span>
-        </label>
-        <input
-                class="give-input required"
-                type="text"
-                name="give_phone"
-                placeholder="<?php esc_attr_e( 'Phone Number', 'give' ); ?>"
-                id="give-phone"
-                value="<?php echo isset( $give_user_info['give_phone'] ) ? $give_user_info['give_phone'] : ''; ?>"
-            <?php echo( give_field_is_required( 'give_phone', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
-        />
-    </p>
-    <p id="give-remark-wrap" class="form-row form-row-wide">
-        <label class="give-label" for="give-remark">
-            <?php esc_html_e( 'Remark', 'give' ); ?>
-            <?php if ( give_field_is_required( 'give_remark', $form_id ) ) { ?>
-                <span class="give-required-indicator">*</span>
-            <?php } ?>
-            <span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_attr_e( 'Remark of donation transaction.', 'give' ); ?>"></span>
-        </label>
-        <input
-                class="give-input required"
-                type="text"
-                name="give_remark"
-                placeholder="<?php esc_attr_e( 'Remark', 'give' ); ?>"
-                id="give-remark"
-                value="<?php echo isset( $give_user_info['give_remark'] ) ? $give_user_info['give_remark'] : ''; ?>"
-            <?php echo( give_field_is_required( 'give_remark', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
-        />
-    </p>
+   
 	<?php
 } 
 add_action( 'give_donation_form_after_email', 'give_phone_number_form_fields', 10, 1 );
 /* End of Add Phone Number Field */
 
 /* Make Phone Number Field Required */
-function give_required_phone_number($required_fields)
-{
-    $required_fields['give_phone'] =  array(
-		'give_phone' => array(
-			'error_id'      => 'invalid_phone',
-			'error_message' => __( 'Please enter phone number.', 'give' ),
-		));
-    return $required_fields;
-}
-add_filter( 'give_donation_form_required_fields', 'give_required_phone_number');
+// function give_required_phone_number($required_fields)
+// {
+//     $required_fields['give_phone'] =  array(
+// 		'give_phone' => array(
+// 			'error_id'      => 'invalid_phone',
+// 			'error_message' => __( 'Please enter phone number.', 'give' ),
+// 		));
+//     return $required_fields;
+// }
+// add_filter( 'give_donation_form_required_fields', 'give_required_phone_number');
 
 /* End of berrypay Requery Function */
