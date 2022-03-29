@@ -36,7 +36,7 @@ BerryPay payment gateway plugin for GiveWP. This plugin enable online payment us
 	
 Yes, we require info such as merchant id and secret key that is only available after you sign up with BerryPay.
 	
-**Can I use this plugin without using WooCommerce?**
+**Can I use this plugin without using GiveWP?**
 	
 No.
 	
